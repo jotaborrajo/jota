@@ -1,0 +1,27 @@
+﻿openModel("//Evil.mo");
+cd ..
+openModel("//Libraries/IDEAS/IDEAS_2.0.mo");
+cd ..
+cd("C:/SIMULATION RESULTS"); 
+modelName="Evil.Original";
+variablesToExport={"Time","sim.Te","hell.TSensor","hell.airModel.TAir","evil.HeatingPower[1]","evil.HeatingEnergy[1]","evil.CoolingPower[1]","evil.CoolingEnergy[1]"};
+nSim=20; //Number of simulations
+
+for i in 1:nSim loop
+   //Execute a simulation
+   simulateExtendedModel(
+   modelName,
+   startTime=0,
+   stopTime=31000000,
+   outputInterval=3600,         
+   initialNames={"evil.setTHeat","evil.setCoolDiff"},
+   initialValues={18+i,0+i*6/10},
+   resultFile="test"+String(i));
+
+   //generation of CSV file
+   fileName="test"+String(i)+".mat"; 
+   n=readTrajectorySize(fileName);
+   traj_transposed=transpose(readTrajectory(fileName,variablesToExport,n));
+   CSVfile="test"+String(i)+".csv";
+   DataFiles.writeCSVmatrix(CSVfile, variablesToExport, traj_transposed);
+end for;
