@@ -1,8 +1,9 @@
-﻿openModel("//Evil.mo");
+﻿//clear
+openModel("//Evil.mo");
 cd ..
+dir=Modelica.Utilities.System.getWorkDirectory(); //It gets the full path of the WD
 openModel("//Libraries/IDEAS/IDEAS_2.0.mo");
-cd ..
-cd("C:/SIMULATION RESULTS"); 
+cd(dir+"/SIMULATION RESULTS"); //the WD is included in the repo. Maybe it is a bad idea (git is checking file changes in the repo all the time --> CPU usage increases during simulations)
 modelName="Evil.Original";
 variablesToExport={"Time","sim.Te","hell.TSensor","hell.airModel.TAir","evil.HeatingPower[1]","evil.HeatingEnergy[1]","evil.CoolingPower[1]","evil.CoolingEnergy[1]"};
 nSim=20; //Number of simulations
